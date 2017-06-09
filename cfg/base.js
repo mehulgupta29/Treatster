@@ -37,7 +37,104 @@ module.exports = {
       styles: `${defaultSettings.srcPath}/styles/`,
       config: `${defaultSettings.srcPath}/config/` + process.env.REACT_WEBPACK_ENV,
       'react/lib/ReactMount': 'react-dom/lib/ReactMount'
-    }
+    },
+    modules: [
+      'node_modules'
+    ]
   },
-  module: {}
+  module: {
+
+    preLoaders: [
+      // {
+      //   test: /\.(js|jsx)$/,
+      //   include: this.srcPathAbsolute,
+      //   loader: 'eslint'
+      // }
+    ],
+    loaders: [
+      {
+        test: /\.cssmodule\.css$/,
+        loaders: [
+          'style',
+          'css?modules&importLoaders=1&localIdentName=[name]-[local]-[hash:base64:5]'
+        ]
+      },
+      {
+        test: /^.((?!cssmodule).)*\.css$/,
+        loaders: [
+          'style',
+          'css'
+        ]
+      },
+      {
+        test: /\.cssmodule\.(sass|scss)$/,
+        loaders: [
+          'style',
+          'css?modules&importLoaders=1&localIdentName=[name]-[local]-[hash:base64:5]',
+          'sass'
+        ]
+      },
+      {
+        test: /^.((?!cssmodule).)*\.(sass|scss)$/,
+        loaders: [
+          'style',
+          'css',
+          'sass'
+        ]
+      },
+      {
+        test: /\.cssmodule\.less$/,
+        loaders: [
+          'style',
+          'css?modules&importLoaders=1&localIdentName=[name]-[local]-[hash:base64:5]',
+          'less'
+        ]
+      },
+      {
+        test: /^.((?!cssmodule).)*\.less$/,
+        loaders: [
+          'style',
+          'css',
+          'less'
+        ]
+      },
+      {
+        test: /\.cssmodule\.styl$/,
+        loaders: [
+          'style',
+          'css?modules&importLoaders=1&localIdentName=[name]-[local]-[hash:base64:5]',
+          'stylus'
+        ]
+      },
+      {
+        test: /^.((?!cssmodule).)*\.styl$/,
+        loaders: [
+          'style',
+          'css',
+          'stylus'
+        ]
+      },
+      {
+        test: /\.(png|jpg|gif|woff|woff2|eot|ttf|svg)(\?.*|)$/,
+        loaders: ['url-loader?limit=20000&name=[name].[ext]']
+      },
+      {
+        test: /\.json$/,
+        loaders: 'json'
+      },
+      {
+        test: /\.ts(x?)$/,
+        exclude: /node_modules/,
+        loader: ['babel', 'ts-loader']
+      },
+      {
+        test: /\.(js|jsx)$/,
+        include: [].concat(
+          this.includedPackages,
+          [this.srcPathAbsolute]
+        ),
+        loaders: ['babel']
+      }
+    ]
+  }
 };
